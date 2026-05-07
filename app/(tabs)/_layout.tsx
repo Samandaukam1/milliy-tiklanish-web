@@ -1,83 +1,64 @@
-import { Tabs } from "expo-router";
-import { Home, Newspaper, Radio, Film, User } from "lucide-react-native";
 import React, { useEffect } from "react";
-import { View, StyleSheet, Platform, useWindowDimensions } from "react-native";
+import { Platform, StyleSheet, View, useWindowDimensions } from "react-native";
+import { Tabs } from "expo-router";
+import { Home, BookOpen, Radio, Video, User } from "lucide-react-native";
+
 import { preloadMediaItems } from "@/lib/services";
 import { useLanguage } from "@/providers/LanguageProvider";
-import { useColors } from "@/utils/useColors";
-
-function TabBarBackground() {
-  const colors = useColors();
-  return <View style={{ flex: 1, backgroundColor: colors.card }} />;
-}
-
-  );
-}
 
 export default function TabLayout() {
-  const { t } = useLanguage();
-  const { language } = useLanguage();
-  const colors = useColors();
   const { width } = useWindowDimensions();
-  const isDesktop = Platform.OS === "web" && width >= 1024;
+  const { t } = useLanguage();
+  const isWeb = Platform.OS === "web";
+  const isDesktop = isWeb && width >= 900;
 
   useEffect(() => {
-    void preloadMediaItems(language as any);
-  }, [language]);
+    preloadMediaItems().catch(() => {});
+  }, []);
 
   return (
-    <View style={{ flex: 1, backgroundColor: colors.background }}>
+    <View style={styles.container}>
       <Tabs
         screenOptions={{
-          tabBarActiveTintColor: colors.tint,
-          tabBarInactiveTintColor: colors.tabIconDefault,
           headerShown: false,
-          tabBarStyle: isDesktop
-            ? { display: "none" }
-            : {
-                backgroundColor: colors.card,
-                borderTopColor: colors.border,
-                borderTopWidth: 1,
-                height: Platform.OS === "ios" ? 88 : 64,
-                paddingTop: 8,
-              },
-          tabBarLabelStyle: { fontSize: 11, fontWeight: "600", marginTop: 2 },
-          tabBarBackground: isDesktop ? undefined : TabBarBackground,
+          tabBarStyle: isDesktop ? { display: "none" } : styles.tabBar,
+          tabBarActiveTintColor: "#ed1c24",
+          tabBarInactiveTintColor: "#8f8a7e",
         }}
       >
         <Tabs.Screen
           name="index"
           options={{
-            title: t("tabs.home"),
-            tabBarIcon: ({ color, size }) => <Home color={color} size={size ?? 22} />,
+            title: t("home"),
+            tabBarIcon: ({ color, size }) => <Home color={color} size={size} />,
           }}
         />
         <Tabs.Screen
-          name="articles"
+          name="library"
           options={{
-            title: t("tabs.articles"),
-            tabBarIcon: ({ color, size }) => <Newspaper color={color} size={size ?? 22} />,
+            title: t("library"),
+            tabBarIcon: ({ color, size }) => <BookOpen color={color} size={size} />,
           }}
         />
         <Tabs.Screen
           name="radio"
           options={{
-            title: t("tabs.radio"),
-            tabBarIcon: ({ color, size }) => <Radio color={color} size={size ?? 22} />,
+            title: t("radio"),
+            tabBarIcon: ({ color, size }) => <Radio color={color} size={size} />,
           }}
         />
         <Tabs.Screen
           name="media"
           options={{
-            title: t("tabs.media"),
-            tabBarIcon: ({ color, size }) => <Film color={color} size={size ?? 22} />,
+            title: t("media"),
+            tabBarIcon: ({ color, size }) => <Video color={color} size={size} />,
           }}
         />
         <Tabs.Screen
           name="profile"
           options={{
-            title: t("tabs.profile"),
-            tabBarIcon: ({ color, size }) => <User color={color} size={size ?? 22} />,
+            title: t("profile"),
+            tabBarIcon: ({ color, size }) => <User color={color} size={size} />,
           }}
         />
       </Tabs>
@@ -86,10 +67,14 @@ export default function TabLayout() {
 }
 
 const styles = StyleSheet.create({
-  miniPlayerHost: {
-    position: "absolute",
-    left: 0,
-    right: 0,
-    bottom: Platform.OS === "ios" ? 88 : 64,
+  container: {
+    flex: 1,
+  },
+  tabBar: {
+    backgroundColor: "#fffaf1",
+    borderTopColor: "rgba(237, 28, 36, 0.12)",
+    height: 72,
+    paddingBottom: 10,
+    paddingTop: 8,
   },
 });
