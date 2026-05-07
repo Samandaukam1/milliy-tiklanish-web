@@ -3,7 +3,6 @@ import { Home, Newspaper, Radio, Film, User } from "lucide-react-native";
 import React, { useEffect } from "react";
 import { View, StyleSheet, Platform, useWindowDimensions } from "react-native";
 import { preloadMediaItems } from "@/lib/services";
-import { usePlayer } from "@/providers/PlayerProvider";
 import { useLanguage } from "@/providers/LanguageProvider";
 import { useColors } from "@/utils/useColors";
 
@@ -12,11 +11,6 @@ function TabBarBackground() {
   return <View style={{ flex: 1, backgroundColor: colors.card }} />;
 }
 
-  const { current } = usePlayer();
-  if (!current) return null;
-  return (
-    <View style={styles.miniPlayerHost} pointerEvents="box-none">
-    </View>
   );
 }
 
