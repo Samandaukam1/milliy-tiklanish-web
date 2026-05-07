@@ -1,9 +1,8 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Platform, StyleSheet, View, useWindowDimensions } from "react-native";
 import { Tabs } from "expo-router";
 import { Home, BookOpen, Radio, Video, User } from "lucide-react-native";
 
-import { preloadMediaItems } from "@/lib/services";
 import { useLanguage } from "@/providers/LanguageProvider";
 
 export default function TabLayout() {
@@ -11,10 +10,6 @@ export default function TabLayout() {
   const { t } = useLanguage();
   const isWeb = Platform.OS === "web";
   const isDesktop = isWeb && width >= 900;
-
-  useEffect(() => {
-    preloadMediaItems().catch(() => {});
-  }, []);
 
   return (
     <View style={styles.container}>
