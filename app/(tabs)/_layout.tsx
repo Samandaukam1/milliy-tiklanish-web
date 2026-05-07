@@ -2,7 +2,6 @@ import { Tabs } from "expo-router";
 import { Home, Newspaper, Radio, Film, User } from "lucide-react-native";
 import React, { useEffect } from "react";
 import { View, StyleSheet, Platform, useWindowDimensions } from "react-native";
-import { MiniPlayer } from "@/components/MiniPlayer";
 import { preloadMediaItems } from "@/lib/services";
 import { usePlayer } from "@/providers/PlayerProvider";
 import { useLanguage } from "@/providers/LanguageProvider";
@@ -13,12 +12,10 @@ function TabBarBackground() {
   return <View style={{ flex: 1, backgroundColor: colors.card }} />;
 }
 
-function MiniPlayerHost() {
   const { current } = usePlayer();
   if (!current) return null;
   return (
     <View style={styles.miniPlayerHost} pointerEvents="box-none">
-      <MiniPlayer />
     </View>
   );
 }
@@ -90,7 +87,6 @@ export default function TabLayout() {
           }}
         />
       </Tabs>
-      <MiniPlayerHost />
     </View>
   );
 }
